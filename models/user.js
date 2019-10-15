@@ -4,7 +4,10 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
+  },
+  lastName: {
+    type: String,
+    required: [true, 'Cant be blank!'],
   },
   username: {
     type: String,
@@ -23,6 +26,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Cant be blank!']
   },
+  profile: {
+    type: String,
+    default: "user"
+  }
 });
 
 module.exports = mongoose.model('user', userSchema);

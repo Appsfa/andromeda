@@ -39,4 +39,51 @@ router.post('/', (req, res, next) => {
         .catch(next);
 });
 
+/* GET user:id */
+router.get('/:id', (req, res, next) =>{
+  let id = req.params.id;
+  User.findOne({ username: id }).exec()
+      .then(result => {
+        if(result){
+          res.status(200).json({
+            user: result
+          });
+        }
+        else{
+          res.status(404).send('User not found');
+        }
+      })
+      .catch(next);
+});
+
+/* PUT user:id */
+router.put('/:id', (req, res, next) =>{
+    let id = req.params.id;
+    let body = req.body;
+
+    User.findOneAndUpdate({ username: id }, body, {new: true})
+          .then(result => {
+            if(result){
+              res.status(200).json({
+                user: result
+              });
+            }
+            else{
+              res.status(404).send('Cant update, missing user');
+            }
+          })
+          .catch(next)
+});
+
+/* DELETE user:id */
+router.delete('/:id', (req, res, next) =>{
+    let id = req.params.id;
+
+    User.findOneAndRemove({ username: id })
+        .then(() => {
+          res.status(204).json({});
+        })
+        .catch(next)
+});
+
 module.exports = router;
