@@ -31,7 +31,7 @@ router.post('/', (req, res, next) => {
             })
           }else {
             next({
-              message: "Cant planet user",
+              message: "Cant create planet",
               name: "Invalid"
             })
           }
