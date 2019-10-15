@@ -10,6 +10,10 @@ const planetSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Cant be blank!'],
   },
+  goBack:{
+    type: Boolean,
+    default: true
+  }
 });
 
 module.exports = mongoose.model('planet', planetSchema);
