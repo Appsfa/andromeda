@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const countrySchema = new mongoose.Schema({
-  country: {
+const serviceSchema = new mongoose.Schema({
+  service: {
     type: String,
     required: [true, 'Cant be blank!'],
     index: { unique: true },
   }
 });
 
-module.exports = mongoose.model('country', countrySchema);
+module.exports = mongoose.model('service', serviceSchema);
