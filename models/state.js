@@ -9,7 +9,11 @@ const stateSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Cant be blank!'],
     index: { unique: true },
+  },
+  dateCreated:{
+    type: Date,
+    default: Date.now()
   }
 });
 
-module.exports = mongoose.model('country', stateSchema);
+module.exports = mongoose.model('state', stateSchema);
