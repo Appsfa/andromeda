@@ -1,21 +1,30 @@
 var express = require('express');
 var router = express.Router();
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('../models/user');
 
 /* GET users listing. */
-router.get('/', (req, res, next) => {
-  User.find({})
-    .then(result => {
-      if (result.length) {
-          res.status(200).json({
-            user:result
-          });
-      }else {
-          res.status(404).send('Aqui no hay usuarios');
-      }
-    })
-    .catch(next)
+router.get('/', verifyToken, (req, res, next) => {
+  jwt.verify(
+    req.token,
+    'secretKey',
+    (err, authData) => {
+      console.log("Error de verify " + err);
+      if (err) next(err);
+      User.find({})
+        .then(result => {
+          if (result.length) {
+              res.status(200).json({
+                user:result
+              });
+          }else {
+              res.status(404).send('Aqui no hay usuarios');
+          }
+        })
+        .catch(next)
+    }
+  )
 });
 
 router.post('/', (req, res, next) => {
@@ -57,6 +66,53 @@ router.get('/:id', (req, res, next) =>{
       .catch(next);
 });
 
+/*Login. */
+router.post('/login', (req, res, next) => {
+  const body = req.body;
+
+  if(!body.username || !body.password) return next({
+    message: "Username or password are missing",
+    name: "Invalid"
+  });
+
+  User.findOne({ username: body.username })
+        .then(result => {
+          if(result){
+            result.comparePass(body.password, function(err, isMatch){
+              console.log(err);
+              if(err) throw (err);
+
+              if(isMatch){
+                jwt.sign(
+                  { result },
+                  'secretKey',
+                  { expiresIn: '600s' },
+                  (err, accessToken) => {
+                    if(err) next({
+                      message: "Invalid operation",
+                      name: "Forbidden"
+                    });
+                    res.status(200).json({"accessToken": accessToken, "password": result.password});
+                  }
+                );
+              }
+              else {
+                res.status(401).json({
+                  message: "Username or password are incorrect",
+                  name: "Forbidden"
+                })
+              }
+            })
+          } else {
+            next({
+              message: "Username or password are incorrect",
+              name: "Forbidden"
+            })
+          }
+        })
+        .catch(next);
+});
+
 /* PUT user:id */
 router.put('/:id', (req, res, next) =>{
     let id = req.params.id;
@@ -86,5 +142,22 @@ router.delete('/:id', (req, res, next) =>{
         })
         .catch(next)
 });
+
+//JIJI
+function verifyToken(req, res, next){
+  console.log("Estoy en verifyToken");
+  const bearerHeader = req.headers['authorization'];
+  let token = bearerHeader.split(' ');
+  if(token && token[1]){
+    req.token = token[1];
+    next();
+  } else {
+    next({
+      message: "Invalid token",
+      name: "Forbidden"
+    });
+  }
+}
+
 
 module.exports = router;
