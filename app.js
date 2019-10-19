@@ -12,7 +12,7 @@ const statesRouter = require('./routes/states');
 const stationsRouter = require('./routes/stations');
 // const flightsRouter = require('./routes/flights');
 const additional_servicesRouter = require('./routes/additional_services');
-// const spaceshipsRouter = require('./routes/spaceships');
+const spaceshipsRouter = require('./routes/spaceships');
 // const servicesRouter = require('./routes/services');
 // const pricingsRouter = require('./routes/pricings');
 // const spaceships_has_additional_servicesRouter = require('./routes/spaceships_has_additional_services');
@@ -38,11 +38,33 @@ app.use('/states', statesRouter);
 app.use('/stations', stationsRouter);
 // app.use('/flights', flightsRouter);
 app.use('/additional_services', additional_servicesRouter);
-// app.use('/spaceships', spaceshipsRouter);
+app.use('/spaceships', spaceshipsRouter);
 // app.use('/services', servicesRouter);
 // app.use('/pricings', pricingsRouter);
 // app.use('/spaceships_has_additional_services', spaceships_has_additional_servicesRouter);
 // app.use('/pricings_has_services', pricings_has_servicesRouter);
+
+app.use(logErrors)
+app.use(clientErrorHandler)
+app.use(errorHandler)
+
+function logErrors (err, req, res, next) {
+  console.error(err.stack)
+  next(err)
+}
+
+function clientErrorHandler (err, req, res, next) {
+  if (req.xhr) {
+    res.status(500).send({ error: 'Something failed!' })
+  } else {
+    next(err)
+  }
+}
+
+function errorHandler (err, req, res, next) {
+  res.status(err.status || 500).json({ error: err })
+}
+
 app.get('*', (req, res) => {
   res.status(404).send('Route not found');
 });

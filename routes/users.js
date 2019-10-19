@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
   //SIGN UP
   const body = req.body;
-  res.send(body);
+  // res.send(body);
   User.create(body)
         .then(result => {
           if(result){
@@ -32,7 +32,8 @@ router.post('/', (req, res, next) => {
           }else {
             next({
               message: "Cant create user",
-              name: "Invalid"
+              name: "Invalid",
+              status: 403
             })
           }
         })
