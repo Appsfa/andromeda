@@ -19,6 +19,7 @@ const statusRouter = require('./routes/status');
 const seatsRouter = require('./routes/seats');
 const spaceships_has_additional_servicesRouter = require('./routes/spaceships_has_additional_services');
 const pricings_has_servicesRouter = require('./routes/benefits_has_classes');
+const flights_has_classes = require('./routes/flights_has_classes');
 
 mongoose.connect('mongodb://127.0.0.1:27017/andromedaDB',
   { useNewUrlParser: true, useUnifiedTopology: true}
@@ -47,6 +48,7 @@ app.use('/status', statusRouter);
 app.use('/seats', seatsRouter);
 app.use('/spaceships_has_additional_services', spaceships_has_additional_servicesRouter);
 app.use('/benefits_has_classes', pricings_has_servicesRouter);
+app.use('/flights_has_classes', flights_has_classes);
 
 app.use(logErrors)
 app.use(clientErrorHandler)
