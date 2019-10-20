@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-const Planet = require('../models/planet');
+const Benefits = require('../models/benefit');
 const jwt = require('jsonwebtoken');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-  Planet.find({})
+  Benefits.find({})
     .then(result => {
       if (result.length) {
           res.status(200).json({
-            planet:result
+            benefits:result
           });
       }else {
-          res.status(404).send('Aqui no hay planetas');
+          res.status(404).send('Aqui no hay naves espaciales');
       }
     })
     .catch(next)
@@ -23,7 +23,6 @@ router.post('/', verifyToken, (req, res, next) => {
   //SIGN UP
   const body = req.body;
   // res.send(body);
-
   jwt.verify(
     req.token,
     'secretKey',
@@ -31,16 +30,16 @@ router.post('/', verifyToken, (req, res, next) => {
       console.log("Error de verify " + err);
       if (err) next(err);
 
-      Planet.create(body)
+      Benefits.create(body)
         .then(result => {
           if(result){
             res.status(201).json({
-              message: "Creacion de planeta exitoso",
-              planet: result
+              message: "Creacion de nave espacial exitoso",
+              benefits: result
             })
           }else {
             next({
-              message: "Cant create planet",
+              message: "Cant create Spaceship",
               name: "Invalid"
             })
           }
@@ -53,11 +52,11 @@ router.post('/', verifyToken, (req, res, next) => {
 /* GET user:id */
 router.get('/:id', (req, res, next) =>{
   let id = req.params.id;
-  Planet.findOne({ name: id }).exec()
+  Benefits.findById( id ).exec()
       .then(result => {
         if(result){
           res.status(200).json({
-            planet: result
+            benefits: result
           });
         }
         else{
@@ -79,15 +78,15 @@ router.put('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Planet.findOneAndUpdate({ name: id }, body, {new: true})
+        Benefits.findByIdAndUpdate(id, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
-                planet: result
+                benefits: result
               });
             }
             else{
-              res.status(404).send('Cant update, missing planet');
+              res.status(404).send('Cant update, missing Spaceship');
             }
           })
           .catch(next)
@@ -106,7 +105,7 @@ router.delete('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Planet.findOneAndRemove({ name: id })
+        Benefits.findByIdAndRemove( id )
         .then(() => {
           res.status(204).json({});
         })
@@ -121,7 +120,6 @@ function verifyToken(req, res, next){
   if(!bearerHeader){
     res.status(403).send('Sin acceso');
     return
-    // next();
   }
 
   else{

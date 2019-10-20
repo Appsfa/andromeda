@@ -19,11 +19,18 @@ router.get('/', (req, res, next) => {
     .catch(next)
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', verifyToken, (req, res, next) => {
   //SIGN UP
   const body = req.body;
-  res.send(body);
-  Additional_service.create(body)
+  // res.send(body);
+  jwt.verify(
+    req.token,
+    'secretKey',
+    (err, authData) => {
+      console.log("Error de verify " + err);
+      if (err) next(err);
+
+      Additional_service.create(body)
         .then(result => {
           if(result){
             res.status(201).json({
@@ -38,6 +45,8 @@ router.post('/', (req, res, next) => {
           }
         })
         .catch(next);
+      }
+    )
 });
 
 /* GET user:id */
@@ -58,11 +67,18 @@ router.get('/:id', (req, res, next) =>{
 });
 
 /* PUT user:id */
-router.put('/:id', (req, res, next) =>{
+router.put('/:id', verifyToken, (req, res, next) =>{
     let id = req.params.id;
     let body = req.body;
 
-    Additional_service.findOneAndUpdate({ nameService: id }, body, {new: true})
+    jwt.verify(
+      req.token,
+      'secretKey',
+      (err, authData) => {
+        console.log("Error de verify " + err);
+        if (err) next(err);
+
+        Additional_service.findOneAndUpdate({ nameService: id }, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
@@ -74,17 +90,28 @@ router.put('/:id', (req, res, next) =>{
             }
           })
           .catch(next)
+        }
+      )
 });
 
 /* DELETE user:id */
-router.delete('/:id', (req, res, next) =>{
+router.delete('/:id', verifyToken, (req, res, next) =>{
     let id = req.params.id;
 
-    Additional_service.findOneAndRemove({ nameService: id })
+    jwt.verify(
+      req.token,
+      'secretKey',
+      (err, authData) => {
+        console.log("Error de verify " + err);
+        if (err) next(err);
+
+        Additional_service.findOneAndRemove({ nameService: id })
         .then(() => {
           res.status(204).json({});
         })
         .catch(next)
+      }
+    )
 });
 
 function verifyToken(req, res, next){

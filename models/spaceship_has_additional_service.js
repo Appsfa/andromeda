@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const countrySchema = new mongoose.Schema({
+const spaceship_has_additional_serviceSchema = new mongoose.Schema({
   idSpaceship: {
     type: String,
     required: [true, 'Cant be blank!'],
@@ -11,6 +11,6 @@ const countrySchema = new mongoose.Schema({
   }
 });
 
-countrySchema.index({ idSpaceship: 1, nameService: 1 }, { unique: true });
+spaceship_has_additional_serviceSchema.index({ idSpaceship: 1, nameService: 1 }, { unique: true });
 
-module.exports = mongoose.model('country', countrySchema);
+module.exports = mongoose.model('spaceship_has_additional_service', spaceship_has_additional_serviceSchema);
