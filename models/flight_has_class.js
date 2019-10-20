@@ -8,6 +8,7 @@ const flight_has_classSchema = new mongoose.Schema({
   idFlight: {
     type: String,
     required: [true, 'Cant be blank!'],
+    min: 3,
   },
   totalSeats:{
     type: Number,

@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
   },
   profile: {
     type: String,
+    required: [true, 'Cant be blank!'],
     default: "user"
   }
 });
