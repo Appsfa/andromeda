@@ -3,6 +3,7 @@ var router = express.Router();
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 /* GET users listing. */
 router.get('/', verifyToken, (req, res, next) => {
@@ -86,13 +87,13 @@ router.post('/login', (req, res, next) => {
                 jwt.sign(
                   { result },
                   'secretKey',
-                  { expiresIn: '600s' },
+                  { expiresIn: '6000s' },
                   (err, accessToken) => {
                     if(err) next({
                       message: "Invalid operation",
                       name: "Forbidden"
                     });
-                    res.status(200).json({"accessToken": accessToken, "password": result.password});
+                    res.status(200).json({"accessToken": accessToken, "key": result.password});
                   }
                 );
               }
@@ -114,11 +115,19 @@ router.post('/login', (req, res, next) => {
 });
 
 /* PUT user:id */
-router.put('/:id', (req, res, next) =>{
+router.put('/:id', verifyToken, (req, res, next) =>{
+  // console.log('updsate');
     let id = req.params.id;
     let body = req.body;
+    // body.password = bcrypt.hashSync(body.password, SALT_ROUNDS);
+    jwt.verify(
+      req.token,
+      'secretKey',
+      (err, authData) => {
+        console.log("Error de verify " + err);
+        if (err) next(err);
 
-    User.findOneAndUpdate({ username: id }, body, {new: true})
+        User.findOneAndUpdate({ username: id }, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
@@ -130,32 +139,49 @@ router.put('/:id', (req, res, next) =>{
             }
           })
           .catch(next)
+      }
+    )
 });
 
 /* DELETE user:id */
-router.delete('/:id', (req, res, next) =>{
+router.delete('/:id', verifyToken, (req, res, next) =>{
     let id = req.params.id;
 
+    jwt.verify(
+      req.token,
+      'secretKey',
+      (err, authData) => {
+        console.log("Error de verify " + err);
+        if (err) next(err);
     User.findOneAndRemove({ username: id })
         .then(() => {
           res.status(204).json({});
         })
         .catch(next)
+      }
+    )
 });
 
 //JIJI
 function verifyToken(req, res, next){
   console.log("Estoy en verifyToken");
   const bearerHeader = req.headers['authorization'];
-  let token = bearerHeader.split(' ');
-  if(token && token[1]){
-    req.token = token[1];
-    next();
-  } else {
-    next({
-      message: "Invalid token",
-      name: "Forbidden"
-    });
+  if(!bearerHeader){
+    res.status(403).send('Sin acceso');
+    return
+  }
+
+  else{
+    let token = bearerHeader.split(' ');
+    if(token && token[1]){
+      req.token = token[1];
+      next();
+    } else {
+      next({
+        message: "Invalid token",
+        name: "Forbidden"
+      });
+    }
   }
 }
 

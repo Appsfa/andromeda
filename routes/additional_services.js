@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 const Additional_service = require('../models/additional_service');
+const jwt = require('jsonwebtoken');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -85,5 +86,27 @@ router.delete('/:id', (req, res, next) =>{
         })
         .catch(next)
 });
+
+function verifyToken(req, res, next){
+  console.log("Estoy en verifyToken");
+  const bearerHeader = req.headers['authorization'];
+  if(!bearerHeader){
+    res.status(403).send('Sin acceso');
+    return
+  }
+
+  else{
+    let token = bearerHeader.split(' ');
+    if(token && token[1]){
+      req.token = token[1];
+      next();
+    } else {
+      next({
+        message: "Invalid token",
+        name: "Forbidden"
+      });
+    }
+  }
+}
 
 module.exports = router;

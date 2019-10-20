@@ -12,8 +12,9 @@ const stationSchema = new mongoose.Schema({
   station:{
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
   }
 });
+
+stationSchema.index({ station: 1, state: 1, country: 1 }, { unique: true });
 
 module.exports = mongoose.model('station', stationSchema);

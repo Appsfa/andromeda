@@ -51,6 +51,12 @@ userSchema.pre('save', function(next){
   })
 });
 
+// userSchema.pre(['updateOne', 'findOneAndUpdate', 'update'], function(next) {
+//   // debugger("Update");
+//   this.update({}, { $set: {password: bcrypt.hashSync(this.getUpdate().$set.password, SALT_ROUNDS)} } );
+//   console.log(this.getUpdate());
+//   next();
+// });
 
 userSchema.methods.comparePass = function(testPass, callback){
   let user = this;

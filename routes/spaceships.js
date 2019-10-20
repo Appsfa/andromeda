@@ -86,4 +86,19 @@ router.delete('/:id', (req, res, next) =>{
         .catch(next)
 });
 
+function verifyToken(req, res, next){
+  console.log("Estoy en verifyToken");
+  const bearerHeader = req.headers['authorization'];
+  let token = bearerHeader.split(' ');
+  if(token && token[1]){
+    req.token = token[1];
+    next();
+  } else {
+    next({
+      message: "Invalid token",
+      name: "Forbidden"
+    });
+  }
+}
+
 module.exports = router;

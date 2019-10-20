@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
 
 const flightSchema = new mongoose.Schema({
-  country: {
-    type: String,
-    required: [true, 'Cant be blank!'],
-    index: { unique: true },
-  },
   station: {
     type: String,
     required: [true, 'Cant be blank!'],
+  },
+  state: {
+    type: String,
+    required: [true, 'Cant be blank!'],
     index: { unique: true },
   },
-  planet: {
+  country: {
     type: String,
     required: [true, 'Cant be blank!'],
     index: { unique: true },
