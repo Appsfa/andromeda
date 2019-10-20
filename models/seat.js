@@ -24,6 +24,7 @@ const seatSchema = new mongoose.Schema({
   status:{
     type: String,
     required: [true, 'Cant be blank!'],
+    default: "waiting",
   },
 });
 

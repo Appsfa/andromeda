@@ -16,6 +16,7 @@ const spaceshipsRouter = require('./routes/spaceships');
 const servicesRouter = require('./routes/benefits');
 const pricingsRouter = require('./routes/classes');
 const statusRouter = require('./routes/status');
+const seatsRouter = require('./routes/seats');
 const spaceships_has_additional_servicesRouter = require('./routes/spaceships_has_additional_services');
 const pricings_has_servicesRouter = require('./routes/benefits_has_classes');
 
@@ -43,6 +44,7 @@ app.use('/spaceships', spaceshipsRouter);
 app.use('/benefits', servicesRouter);
 app.use('/classes', pricingsRouter);
 app.use('/status', statusRouter);
+app.use('/seats', seatsRouter);
 app.use('/spaceships_has_additional_services', spaceships_has_additional_servicesRouter);
 app.use('/benefits_has_classes', pricings_has_servicesRouter);
 
