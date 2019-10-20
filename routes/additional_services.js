@@ -39,7 +39,7 @@ router.post('/', verifyToken, (req, res, next) => {
             })
           }else {
             next({
-              message: "Cant create additional service",
+              message: "No se pudo crear servicio adicional",
               name: "Invalid"
             })
           }
@@ -60,7 +60,7 @@ router.get('/:id', (req, res, next) =>{
           });
         }
         else{
-          res.status(404).send('Planet not found');
+          res.status(404).send('Servicio adicional no encontrado');
         }
       })
       .catch(next);

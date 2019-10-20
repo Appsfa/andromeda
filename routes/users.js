@@ -87,7 +87,7 @@ router.post('/login', (req, res, next) => {
                 jwt.sign(
                   { result },
                   'secretKey',
-                  { expiresIn: '6000s' },
+                  { expiresIn: '60000s' },
                   (err, accessToken) => {
                     if(err) next({
                       message: "Invalid operation",

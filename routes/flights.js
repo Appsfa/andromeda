@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-const Benefits_has_classes = require('../models/flight');
+const Flights = require('../models/flight');
 const jwt = require('jsonwebtoken');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-  Benefits_has_classes.find({})
+  Flights.find({})
     .then(result => {
       if (result.length) {
           res.status(200).json({
-            classes:result
+            flights:result
           });
       }else {
-          res.status(404).send('Aqui no hay naves espaciales');
+          res.status(404).send('Aqui no hay vuelos');
       }
     })
     .catch(next)
@@ -30,16 +30,16 @@ router.post('/', verifyToken, (req, res, next) => {
       console.log("Error de verify " + err);
       if (err) next(err);
 
-      Benefits_has_classes.create(body)
+      Flights.create(body)
         .then(result => {
           if(result){
             res.status(201).json({
-              message: "Creacion de nave espacial exitoso",
-              benefit_has_class: result
+              message: "Creacion de vuelo exitoso",
+              flight: result
             })
           }else {
             next({
-              message: "Cant create Spaceship",
+              message: "Cant create flight",
               name: "Invalid"
             })
           }
@@ -52,15 +52,15 @@ router.post('/', verifyToken, (req, res, next) => {
 /* GET user:id */
 router.get('/:id', (req, res, next) =>{
   let id = req.params.id;
-  Benefits_has_classes.findById( id ).exec()
+  Flights.findById( id ).exec()
       .then(result => {
         if(result){
           res.status(200).json({
-            benefit_has_class: result
+            flight: result
           });
         }
         else{
-          res.status(404).send('Planet not found');
+          res.status(404).send('Flight not found');
         }
       })
       .catch(next);
@@ -78,15 +78,15 @@ router.put('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits_has_classes.findByIdAndUpdate(id, body, {new: true})
+        Flights.findByIdAndUpdate(id, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
-                benefit_has_class: result
+                flight: result
               });
             }
             else{
-              res.status(404).send('Cant update, missing Spaceship');
+              res.status(404).send('Cant update, missing flight');
             }
           })
           .catch(next)
@@ -105,7 +105,7 @@ router.delete('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits_has_classes.findByIdAndRemove( id )
+        Flights.findByIdAndRemove( id )
         .then(() => {
           res.status(204).json({});
         })

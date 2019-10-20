@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
             class:result
           });
       }else {
-          res.status(404).send('Aqui no hay naves espaciales');
+          res.status(404).send('Aqui no hay clases');
       }
     })
     .catch(next)
@@ -34,12 +34,12 @@ router.post('/', verifyToken, (req, res, next) => {
         .then(result => {
           if(result){
             res.status(201).json({
-              message: "Creacion de nave espacial exitoso",
+              message: "Creacion de clase exitoso",
               class: result
             })
           }else {
             next({
-              message: "Cant create Spaceship",
+              message: "Cant create class",
               name: "Invalid"
             })
           }
@@ -52,7 +52,7 @@ router.post('/', verifyToken, (req, res, next) => {
 /* GET user:id */
 router.get('/:id', (req, res, next) =>{
   let id = req.params.id;
-  Classes.findById( id ).exec()
+  Classes.findOne( { className: id } ).exec()
       .then(result => {
         if(result){
           res.status(200).json({
@@ -60,7 +60,7 @@ router.get('/:id', (req, res, next) =>{
           });
         }
         else{
-          res.status(404).send('Planet not found');
+          res.status(404).send('Class not found');
         }
       })
       .catch(next);
@@ -78,7 +78,7 @@ router.put('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Classes.findByIdAndUpdate(id, body, {new: true})
+        Classes.findOneAndUpdate({ className: id }, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
@@ -86,7 +86,7 @@ router.put('/:id', verifyToken, (req, res, next) =>{
               });
             }
             else{
-              res.status(404).send('Cant update, missing Spaceship');
+              res.status(404).send('Cant update, missing class');
             }
           })
           .catch(next)
@@ -105,7 +105,7 @@ router.delete('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Classes.findByIdAndRemove( id )
+        Classes.findOneAndRemove( { className: id } )
         .then(() => {
           res.status(204).json({});
         })

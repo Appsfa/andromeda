@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-const Benefits_has_classes = require('../models/status');
+const Status = require('../models/status');
 const jwt = require('jsonwebtoken');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-  Benefits_has_classes.find({})
+  Status.find({})
     .then(result => {
       if (result.length) {
           res.status(200).json({
-            classes:result
+            status:result
           });
       }else {
-          res.status(404).send('Aqui no hay naves espaciales');
+          res.status(404).send('Aqui no hay estatus');
       }
     })
     .catch(next)
@@ -23,6 +23,7 @@ router.post('/', verifyToken, (req, res, next) => {
   //SIGN UP
   const body = req.body;
   // res.send(body);
+
   jwt.verify(
     req.token,
     'secretKey',
@@ -30,16 +31,16 @@ router.post('/', verifyToken, (req, res, next) => {
       console.log("Error de verify " + err);
       if (err) next(err);
 
-      Benefits_has_classes.create(body)
+      Status.create(body)
         .then(result => {
           if(result){
             res.status(201).json({
-              message: "Creacion de nave espacial exitoso",
-              benefit_has_class: result
+              message: "Creacion de estatus exitoso",
+              status: result
             })
           }else {
             next({
-              message: "Cant create Spaceship",
+              message: "Cant create status",
               name: "Invalid"
             })
           }
@@ -52,15 +53,15 @@ router.post('/', verifyToken, (req, res, next) => {
 /* GET user:id */
 router.get('/:id', (req, res, next) =>{
   let id = req.params.id;
-  Benefits_has_classes.findById( id ).exec()
+  Status.findOne({ status: id }).exec()
       .then(result => {
         if(result){
           res.status(200).json({
-            benefit_has_class: result
+            status: result
           });
         }
         else{
-          res.status(404).send('Planet not found');
+          res.status(404).send('Status not found');
         }
       })
       .catch(next);
@@ -78,15 +79,15 @@ router.put('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits_has_classes.findByIdAndUpdate(id, body, {new: true})
+        Status.findOneAndUpdate({ status: id }, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
-                benefit_has_class: result
+                status: result
               });
             }
             else{
-              res.status(404).send('Cant update, missing Spaceship');
+              res.status(404).send('Cant update, missing status');
             }
           })
           .catch(next)
@@ -105,7 +106,7 @@ router.delete('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits_has_classes.findByIdAndRemove( id )
+        Status.findOneAndRemove({ status: id })
         .then(() => {
           res.status(204).json({});
         })

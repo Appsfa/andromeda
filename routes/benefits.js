@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
             benefits:result
           });
       }else {
-          res.status(404).send('Aqui no hay naves espaciales');
+          res.status(404).send('Aqui no hay beneficios');
       }
     })
     .catch(next)
@@ -34,12 +34,12 @@ router.post('/', verifyToken, (req, res, next) => {
         .then(result => {
           if(result){
             res.status(201).json({
-              message: "Creacion de nave espacial exitoso",
+              message: "Creacion de beneficio exitoso",
               benefits: result
             })
           }else {
             next({
-              message: "Cant create Spaceship",
+              message: "Cant create benefit",
               name: "Invalid"
             })
           }
@@ -52,7 +52,7 @@ router.post('/', verifyToken, (req, res, next) => {
 /* GET user:id */
 router.get('/:id', (req, res, next) =>{
   let id = req.params.id;
-  Benefits.findById( id ).exec()
+  Benefits.findOne( { benefit: id } ).exec()
       .then(result => {
         if(result){
           res.status(200).json({
@@ -60,7 +60,7 @@ router.get('/:id', (req, res, next) =>{
           });
         }
         else{
-          res.status(404).send('Planet not found');
+          res.status(404).send('Benefit not found');
         }
       })
       .catch(next);
@@ -78,7 +78,7 @@ router.put('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits.findByIdAndUpdate(id, body, {new: true})
+        Benefits.findOneAndUpdate({ benefit: id }, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
@@ -86,7 +86,7 @@ router.put('/:id', verifyToken, (req, res, next) =>{
               });
             }
             else{
-              res.status(404).send('Cant update, missing Spaceship');
+              res.status(404).send('Cant update, missing Benefit');
             }
           })
           .catch(next)
@@ -105,7 +105,7 @@ router.delete('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits.findByIdAndRemove( id )
+        Benefits.findOneAndRemove( { benefit: id } )
         .then(() => {
           res.status(204).json({});
         })

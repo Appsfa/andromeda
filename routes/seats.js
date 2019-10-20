@@ -1,19 +1,19 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
-const Benefits_has_classes = require('../models/benefit_has_class');
+const Seats = require('../models/seat');
 const jwt = require('jsonwebtoken');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
-  Benefits_has_classes.find({})
+  Seats.find({})
     .then(result => {
       if (result.length) {
           res.status(200).json({
-            benefit_has_classes:result
+            seats:result
           });
       }else {
-          res.status(404).send('Aqui no hay beneficios');
+          res.status(404).send('Aqui no hay asientos');
       }
     })
     .catch(next)
@@ -30,16 +30,16 @@ router.post('/', verifyToken, (req, res, next) => {
       console.log("Error de verify " + err);
       if (err) next(err);
 
-      Benefits_has_classes.create(body)
+      Seats.create(body)
         .then(result => {
           if(result){
             res.status(201).json({
-              message: "Creacion de beneficio",
-              benefit_has_class: result
+              message: "Creacion de asiento exitoso",
+              seat: result
             })
           }else {
             next({
-              message: "Cant create benefit",
+              message: "Cant create seat",
               name: "Invalid"
             })
           }
@@ -50,17 +50,17 @@ router.post('/', verifyToken, (req, res, next) => {
 });
 
 /* GET user:id */
-router.get('/:id/:', (req, res, next) =>{
+router.get('/:id', (req, res, next) =>{
   let id = req.params.id;
-  Benefits_has_classes.findById( id ).exec()
+  Seats.findById( id ).exec()
       .then(result => {
         if(result){
           res.status(200).json({
-            benefit_has_class: result
+            seat: result
           });
         }
         else{
-          res.status(404).send('Benefit not found');
+          res.status(404).send('Seat not found');
         }
       })
       .catch(next);
@@ -78,15 +78,15 @@ router.put('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits_has_classes.findByIdAndUpdate(id, body, {new: true})
+        Seats.findByIdAndUpdate(id, body, {new: true})
           .then(result => {
             if(result){
               res.status(200).json({
-                benefit_has_class: result
+                seat: result
               });
             }
             else{
-              res.status(404).send('Cant update, missing Benefit');
+              res.status(404).send('Cant update, missing seat');
             }
           })
           .catch(next)
@@ -105,7 +105,7 @@ router.delete('/:id', verifyToken, (req, res, next) =>{
         console.log("Error de verify " + err);
         if (err) next(err);
 
-        Benefits_has_classes.findByIdAndRemove( id )
+        Seats.findByIdAndRemove( id )
         .then(() => {
           res.status(204).json({});
         })
