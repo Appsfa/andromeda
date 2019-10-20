@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const serviceSchema = new mongoose.Schema({
-  service: {
+const benefitSchema = new mongoose.Schema({
+  benefit: {
     type: String,
     required: [true, 'Cant be blank!'],
     index: { unique: true },
   }
 });
 
-module.exports = mongoose.model('service', serviceSchema);
+module.exports = mongoose.model('benefit', benefitSchema);

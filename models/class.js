@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const pricingSchema = new mongoose.Schema({
-  pricing: {
+const classSchema = new mongoose.Schema({
+  className: {
     type: String,
     required: [true, 'Cant be blank!'],
     index: { unique: true },
@@ -9,8 +9,7 @@ const pricingSchema = new mongoose.Schema({
   cost: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
   }
 });
 
-module.exports = mongoose.model('pricing', pricingSchema);
+module.exports = mongoose.model('class', classSchema);

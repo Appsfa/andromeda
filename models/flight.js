@@ -8,47 +8,47 @@ const flightSchema = new mongoose.Schema({
   state: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
   },
   country: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
   },
-  username: {
+  idSpaceship: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
   },
-  spaceship: {
+  originPlanet: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
   },
-  pricing: {
+  arrivalPlanet: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
   },
-  nSeat: {
+  departureTimeOrigin: {
+    type: Date,
+    required: [true, 'Cant be blank!'],
+  },
+  arrivalTimeOrigin: {
+    type: Date,
+    required: [true, 'Cant be blank!'],
+  },
+  departureTimeDestination: {
+    type: Date,
+    required: [true, 'Cant be blank!'],
+  },
+  arrivalTimeDestination: {
+    type: Date,
+    required: [true, 'Cant be blank!'],
+  },
+  travelDuration: {
+    type: Number,
+    required: [true, 'Cant be blank!'],
+  },
+  status: {
     type: String,
     required: [true, 'Cant be blank!'],
-    index: { unique: true },
-  },
-  dateStart: {
-    type: String,
-    required: [true, 'Cant be blank!'],
-    index: { unique: true },
-  },
-  dateArrival: {
-    type: String,
-    required: [true, 'Cant be blank!'],
-    index: { unique: true },
-  },
-  luggage: {
-    type: String,
-    required: [true, 'Cant be blank!'],
-    index: { unique: true },
+    default: 'waiting',
   }
 
 });
