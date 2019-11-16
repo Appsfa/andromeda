@@ -21,7 +21,7 @@ const spaceships_has_additional_servicesRouter = require('./routes/spaceships_ha
 const pricings_has_servicesRouter = require('./routes/benefits_has_classes');
 const flights_has_classes = require('./routes/flights_has_classes');
 
-mongoose.connect('mongodb://127.0.0.1:27017/andromedaDB',
+mongoose.connect('mongodb+srv://appsfa:Trainedcrib1@cluster0-8h29p.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true, useUnifiedTopology: true}
 );
 
