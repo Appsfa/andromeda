@@ -75,8 +75,4 @@ app.get('*', (req, res) => {
   res.status(404).send('Route not found');
 });
 
-app.listen(80, function () {
-  console.log('CORS-enabled web server listening on port 80')
-});
-
 module.exports = app;
