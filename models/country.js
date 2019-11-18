@@ -7,6 +7,9 @@ const countrySchema = new mongoose.Schema({
     index: { unique: true },
     match: [/^[a-zA-Z0-9 ]+$/, 'is invalid'],
     min: 3,
+  },
+  image: {
+    type: String
   }
 });
 
