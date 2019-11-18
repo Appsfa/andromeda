@@ -69,6 +69,7 @@ router.get('/:id', (req, res, next) =>{
 
 /*Login. */
 router.post('/login', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
   const body = req.body;
 
   if(!body.username || !body.password) return next({
