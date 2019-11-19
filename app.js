@@ -3,6 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -26,6 +27,8 @@ mongoose.connect('mongodb+srv://appsfa:Trainedcrib1@cluster0-8h29p.mongodb.net/t
 );
 
 const app = express();
+app.use(cors());
+app.options('*', cors());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
