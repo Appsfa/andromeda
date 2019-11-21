@@ -67,6 +67,23 @@ router.get('/:id', (req, res, next) =>{
       .catch(next);
 });
 
+/* GET user:id */
+router.get('/country/:id', (req, res, next) =>{
+  let id = req.params.id;
+  Satate.findOne({ country: id }).exec()
+      .then(result => {
+        if(result){
+          res.status(200).json({
+            state: result
+          });
+        }
+        else{
+          res.status(404).send('Satate not found');
+        }
+      })
+      .catch(next);
+});
+
 /* PUT user:id */
 router.put('/:id', verifyToken, (req, res, next) =>{
     let id = req.params.id;
