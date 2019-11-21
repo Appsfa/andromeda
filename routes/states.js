@@ -70,7 +70,7 @@ router.get('/:id', (req, res, next) =>{
 /* GET user:id */
 router.get('/country/:id', (req, res, next) =>{
   let id = req.params.id;
-  Satate.findOne({ country: id }).exec()
+  Satate.find({ country: id }).exec()
       .then(result => {
         if(result){
           res.status(200).json({
