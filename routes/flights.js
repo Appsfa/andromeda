@@ -85,7 +85,7 @@ router.get('/spaceship/:id', (req, res, next) =>{
 
 router.get('/departure/:id', (req, res, next) =>{
   let id = req.params.id;
-  Flights.find({ departureTimeOrigin: {$lte: ISODate('2015-06-17T10:03:46.000Z')} }).exec()
+  Flights.find({ departureTimeOrigin: {$lte: ISODate(id)} }).exec()
       .then(result => {
         if(result){
           res.status(200).json({
