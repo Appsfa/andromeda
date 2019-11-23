@@ -66,6 +66,23 @@ router.get('/:id', (req, res, next) =>{
       .catch(next);
 });
 
+
+router.get('user/:id', (req, res, next) =>{
+  let id = req.params.id;
+  Seats.find( {username: id} ).exec()
+      .then(result => {
+        if(result){
+          res.status(200).json({
+            seat: result
+          });
+        }
+        else{
+          res.status(404).send('Seat not found');
+        }
+      })
+      .catch(next);
+});
+
 /* PUT user:id */
 router.put('/:id', verifyToken, (req, res, next) =>{
     let id = req.params.id;
