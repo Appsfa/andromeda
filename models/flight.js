@@ -30,7 +30,7 @@ const flightSchema = new mongoose.Schema({
     required: [true, 'Cant be blank!'],
   },
   arrivalTimeOrigin: {
-    type: new Date("<YYYY-mm-dd>"),
+    type: Date,
     required: [true, 'Cant be blank!'],
   },
   departureTimeDestination: {
