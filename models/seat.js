@@ -16,10 +16,12 @@ const seatSchema = new mongoose.Schema({
   luggage:{
     type: Boolean,
     required: [true, 'Cant be blank!'],
+    default: true,
   },
   dangerThings:{
     type: Boolean,
     required: [true, 'Cant be blank!'],
+    default: false,
   },
   status:{
     type: String,
