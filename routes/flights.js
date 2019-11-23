@@ -100,6 +100,23 @@ router.get('/departure/:id', (req, res, next) =>{
       .catch(next);
 });
 
+router.get('/planets/:id', (req, res, next) =>{
+  let id = req.params.id;
+  console.log(id);
+  Flights.find({ arrivalPlanet: id }).exec()
+      .then(result => {
+        if(result){
+          res.status(200).json({
+            flight: result
+          });
+        }
+        else{
+          res.status(404).send('Flight not found');
+        }
+      })
+      .catch(next);
+});
+
 /* PUT user:id */
 router.put('/:id', verifyToken, (req, res, next) =>{
     let id = req.params.id;
